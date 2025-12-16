@@ -1,0 +1,69 @@
+{
+    "name": "haeckel/math",
+    "description": "Math extensions",
+    "type": "library",
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.5"
+    },
+    "license": "LGPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Haeckel\\Math\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dominik Häckel"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "haeckel/type_wrapper": "^2.0"
+    },
+    "scripts": {
+        "test": [
+            "@putenv XDEBUG_MODE=coverage",
+            "vendor/bin/phpunit"
+        ],
+         "testSilent": [
+            "@putenv XDEBUG_MODE=coverage",
+            "vendor/bin/phpunit --no-output 2> /dev/null"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan"
+        ],
+        "cs": [
+            "vendor/bin/phpcs src/"
+        ],
+        "cbf": [
+            "vendor/bin/phpcbf src/"
+        ],
+        "ci": [
+            "@cbf -q",
+            "@cs -q",
+            "@phpstan -q",
+            "@test --no-output"
+        ],
+        "local-ci": [
+            "@cbf",
+            "@cs",
+            "@phpstan --no-progress",
+            "@test --coverage-html .phpunit/html-coverage"
+        ]
+    },
+    "archive": {
+        "exclude": [
+            "/test/",
+            "phpcs.xml.dist",
+            "phpstan.dist.neon",
+            "phpunit.xml",
+            ".gitignore",
+            ".githooks",
+            ".github"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
