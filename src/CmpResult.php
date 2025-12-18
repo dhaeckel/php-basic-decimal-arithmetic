@@ -2,11 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\Math;
+namespace Haeckel\BasicDecArithm;
 
 enum CmpResult
 {
     case Equal;
     case GreaterThan;
     case LessThan;
+
+    public static function fromInt(int $comparisonResult): self
+    {
+        return match (true) {
+            $comparisonResult === 0 => self::Equal,
+            $comparisonResult > 0 => self::GreaterThan,
+            $comparisonResult < 0 => self::LessThan,
+        };
+    }
 }

@@ -6,19 +6,16 @@
 ![Packagist License](https://img.shields.io/packagist/l/haeckel/exception)
 
 
-# Haeckel/php-money
+# Haeckel/php-basic-decimal-arithmetic
 
-Haeckel/php-money is a php library for handling monetary values.
+Simple php library for working with decimal numbers in arbitrary precision.
 
 ## Features
 
-- [Utilities](src/Util) to make working with exceptions easier:
-    - [MessageProvider](src/Util/MsgProvider.php): Provide common exception message templates to
-    have consistent exception messages.
-
-- Extensions:
-    - [LogCtxAware](src/LogCtxAware): Exceptions that contain an array, to capture the context when
-    the exception is thrown. This context can then be passed to a psr/log compatible logger.
+- Calculator interface the four basic arithmetic operations and modulo
+- a bcmath backed calculator implementation
+- a type decimal num to encapsulate strings in decimal notation (main motivation was the bcmath required format)
+- a cmpResult enum to have readable values for comparison results. Used by calculator, but may as well be used for e.g. strcmp
 
 ## Installation
 

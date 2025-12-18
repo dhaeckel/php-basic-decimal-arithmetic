@@ -1,6 +1,6 @@
 {
-    "name": "haeckel/math",
-    "description": "Math extensions",
+    "name": "haeckel/basic-decimal-arithmetic",
+    "description": "Simple lib for doing basic arithmetic with decimal numbers with arbitrary precision",
     "type": "library",
     "require-dev": {
         "phpstan/phpstan": "^2.1",
@@ -9,7 +9,7 @@
     "license": "LGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
-            "Haeckel\\Math\\": "src/"
+            "Haeckel\\BasicDecArithm\\": "src/"
         }
     },
     "authors": [
@@ -19,6 +19,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": "^8.1",
         "haeckel/type_wrapper": "^2.0"
     },
     "scripts": {
@@ -49,12 +50,15 @@
             "@cbf",
             "@cs",
             "@phpstan --no-progress",
+            "@local-test"
+        ],
+        "local-test": [
             "@test --coverage-html .phpunit/html-coverage"
         ]
     },
     "archive": {
         "exclude": [
-            "/test/",
+            "test/",
             "phpcs.xml.dist",
             "phpstan.dist.neon",
             "phpunit.xml",
@@ -65,5 +69,8 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "suggest": {
+        "ext-bcmath": "Required for the bc math based implementation."
     }
 }

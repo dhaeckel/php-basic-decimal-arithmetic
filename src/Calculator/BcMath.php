@@ -2,119 +2,102 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\Math;
+namespace Haeckel\BasicDecArithm\Calculator;
 
-use Haeckel\Money\CalculatorInterface;
+use Haeckel\BasicDecArithm\{CalculatorInterface, CmpResult, DecimalNum};
 
 class BcMath implements CalculatorInterface
 {
     public function add(
-        DecimalNumber $augend,
-        DecimalNumber $addend,
+        DecimalNum $augend,
+        DecimalNum $addend,
         ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($augend, $addend);
-        return new DecimalNumber(
+    ): DecimalNum {
+        $scale ??= $this->getMaxScale($augend, $addend);
+        return new DecimalNum(
             \bcadd($augend->value, $addend->value, $scale),
         );
     }
 
     public function sub(
-        DecimalNumber $minuend,
-        DecimalNumber $subtrahend,
+        DecimalNum $minuend,
+        DecimalNum $subtrahend,
         ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($minuend, $subtrahend);
-        return new DecimalNumber(
+    ): DecimalNum {
+        $scale ??= $this->getMaxScale($minuend, $subtrahend);
+        return new DecimalNum(
             \bcsub((string) $minuend, (string) $subtrahend, $scale),
         );
     }
 
     public function mul(
-        DecimalNumber $multiplier,
-        DecimalNumber $multiplicand,
+        DecimalNum $multiplier,
+        DecimalNum $multiplicand,
         ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($multiplier, $multiplicand);
-        return new DecimalNumber(
+    ): DecimalNum {
+        $scale ??= $this->getMaxScale($multiplier, $multiplicand);
+        return new DecimalNum(
             \bcmul((string) $multiplier, (string) $multiplicand, $scale),
         );
     }
 
     public function div(
-        DecimalNumber $dividend,
-        DecimalNumber $divisor,
+        DecimalNum $dividend,
+        DecimalNum $divisor,
         ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($dividend, $divisor);
-        return new DecimalNumber(
+    ): DecimalNum {
+        $scale ??= $this->getMaxScale($dividend, $divisor);
+        return new DecimalNum(
             \bcdiv((string) $dividend, (string) $divisor, $scale),
         );
     }
 
     public function mod(
-        DecimalNumber $dividend,
-        DecimalNumber $divisor,
+        DecimalNum $dividend,
+        DecimalNum $divisor,
         ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($dividend, $divisor);
-        return new DecimalNumber(
+    ): DecimalNum {
+        $scale ??= $this->getMaxScale($dividend, $divisor);
+        return new DecimalNum(
             \bcmod((string) $dividend, (string) $divisor, $scale),
         );
     }
 
-    public function pow(
-        DecimalNumber $base,
-        DecimalNumber $exponent,
-        ?int $scale = null,
-    ): DecimalNumber {
-        $scale ??= $this->getScale($base, $exponent);
-        return new DecimalNumber(
-            \bcpow((string) $base, (string) $exponent, $scale),
-        );
-    }
-
-    public function sqrt(DecimalNumber $radicand, ?int $scale = null): DecimalNumber
+    public function sum(DecimalNum ...$values): DecimalNum
     {
-        $scale ??= $radicand->scale;
-        return new DecimalNumber(
-            \bcsqrt((string) $radicand, $scale),
-        );
-    }
-
-    public function sum(DecimalNumber ...$values): DecimalNumber
-    {
-        $scale = $this->getScale(...$values);
-        $sum = new DecimalNumber('0');
+        $scale = $this->getMaxScale(...$values);
+        $sum = '0';
         foreach ($values as $value) {
-            $sum = $this->add($sum, $value, $scale);
+            $sum = \bcadd($sum, $value->value, $scale);
         }
 
-        return $sum;
+        return new DecimalNum($sum);
     }
 
-    public function diff(DecimalNumber $minuend, DecimalNumber ...$subtrahends): DecimalNumber
-    {
-        $scale = $this->getScale(...[$minuend, ...$subtrahends]);
-        $diff = $minuend;
+    public function diff(
+        DecimalNum $minuend,
+        DecimalNum ...$subtrahends,
+    ): DecimalNum {
+        $scale = $this->getMaxScale(...[$minuend, ...$subtrahends]);
+        $diff = $minuend->value;
         foreach ($subtrahends as $subtrahend) {
-            $diff = $this->sub($diff, $subtrahend, $scale);
+            $diff = \bcsub((string) $minuend, (string) $subtrahend, $scale);
         }
 
-        return $diff;
+        return new DecimalNum($diff);
     }
 
-    public function compareTo(DecimalNumber $a, DecimalNumber $b): CmpResult
+    public function compareTo(DecimalNum $a, DecimalNum $b): CmpResult
     {
-        $res = \bccomp($a->value, $b->value, $this->getScale($a, $b));
-        return match ($res) {
-            -1 => CmpResult::LessThan,
-            0 => CmpResult::Equal,
-            1 => CmpResult::GreaterThan,
-        };
+        $res = \bccomp(
+            $a->value,
+            $b->value,
+            $this->getMaxScale($a, $b),
+        );
+        return CmpResult::fromInt($res);
     }
 
-    private function getScale(DecimalNumber ...$numbers): int
+    private function getMaxScale(DecimalNum ...$numbers): int
     {
         $maxScale = $numbers[0]->scale;
         foreach ($numbers as $number) {
