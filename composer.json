@@ -3,8 +3,10 @@
     "description": "Simple lib for doing basic arithmetic with decimal numbers with arbitrary precision",
     "type": "library",
     "require-dev": {
+        "phpmd/phpmd": "@stable",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^12.5"
+        "phpunit/phpunit": "^12.5",
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "license": "LGPL-3.0-or-later",
     "autoload": {
@@ -40,15 +42,23 @@
         "cbf": [
             "vendor/bin/phpcbf src/"
         ],
+        "phpmd": [
+            "vendor/bin/phpmd src/ github phpmd.xml"
+        ],
+        "phpmd-local": [
+            "vendor/bin/phpmd src/ text phpmd.xml --cache"
+        ],
         "ci": [
             "@cbf -q",
             "@cs -q",
+            "@phpmd",
             "@phpstan -q",
             "@test --no-output"
         ],
         "local-ci": [
             "@cbf",
             "@cs",
+            "@phpmd-local",
             "@phpstan --no-progress",
             "@local-test"
         ],
