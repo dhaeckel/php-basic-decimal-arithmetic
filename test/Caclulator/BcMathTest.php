@@ -162,13 +162,13 @@ class BcMathTest extends TestCase
 
     public function testIsAccurateWithFloat(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(1));
+        $calculator = new Calculator\BcMath(new PositiveInt(2));
 
         $res = (string) $calculator->add(
             DecimalNum::fromFloat(0.1, new PositiveInt(1)),
             DecimalNum::fromFloat(0.2, new PositiveInt(1)),
         );
 
-        $this->assertEquals('0.3', $res);
+        $this->assertEquals('0.30', $res);
     }
 }
