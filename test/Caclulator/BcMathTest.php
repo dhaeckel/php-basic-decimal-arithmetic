@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Haeckel\BasicDecArithm\Test\Calculator;
 
 use Haeckel\BasicDecArithm\{Calculator, CmpResult, DecimalNum};
-use Haeckel\TypeWrapper\PositiveInt;
+use Haeckel\TypeWrapper\NonNegativeInt;
 use PHPUnit\Framework\Attributes\{CoversClass, UsesClass};
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ class BcMathTest extends TestCase
 {
     public function testAdd(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(1));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(1));
 
         $res = (string) $calculator->add(
             new DecimalNum('0.2'),
@@ -28,7 +28,7 @@ class BcMathTest extends TestCase
 
     public function testSub(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(1));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(1));
 
         $res = (string) $calculator->sub(
             new DecimalNum('0.2'),
@@ -40,7 +40,7 @@ class BcMathTest extends TestCase
 
     public function testMul(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->mul(
             new DecimalNum('0.2'),
@@ -51,7 +51,7 @@ class BcMathTest extends TestCase
 
     public function testDiv(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->div(
             new DecimalNum('0.2'),
@@ -63,7 +63,7 @@ class BcMathTest extends TestCase
 
     public function testCompareTo(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
         $this->assertEquals(
             CmpResult::GreaterThan,
             $calculator->compareTo(
@@ -89,7 +89,7 @@ class BcMathTest extends TestCase
 
     public function testMod(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->mod(
             new DecimalNum('5.5'),
@@ -101,7 +101,7 @@ class BcMathTest extends TestCase
 
     public function testSum(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->sum(
             null,
@@ -115,7 +115,7 @@ class BcMathTest extends TestCase
 
     public function testDiff(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->diff(
             null,
@@ -130,7 +130,7 @@ class BcMathTest extends TestCase
 
     public function testDiffWithNoSubtrahends(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->diff(null, new DecimalNum('10.0'));
 
@@ -139,7 +139,7 @@ class BcMathTest extends TestCase
 
     public function testDiffWithOneSubtrahend(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->diff(
             null,
@@ -153,7 +153,7 @@ class BcMathTest extends TestCase
 
     public function testSumWithoutArgs(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->sum(null);
 
@@ -162,13 +162,36 @@ class BcMathTest extends TestCase
 
     public function testIsAccurateWithFloat(): void
     {
-        $calculator = new Calculator\BcMath(new PositiveInt(2));
+        $calculator = new Calculator\BcMath(new NonNegativeInt(2));
 
         $res = (string) $calculator->add(
-            DecimalNum::fromFloat(0.1, new PositiveInt(1)),
-            DecimalNum::fromFloat(0.2, new PositiveInt(1)),
+            DecimalNum::fromFloat(0.1, new NonNegativeInt(1)),
+            DecimalNum::fromFloat(0.2, new NonNegativeInt(1)),
         );
 
         $this->assertEquals('0.30', $res);
+    }
+
+    // taken from https://github.com/openjdk/jdk/blob/master/test/jdk/java/math/BigDecimal/AddTests.java
+    public function testIsAccurateWithIntMax()
+    {
+        $num = DecimalNum::fromInt(\PHP_INT_MAX);
+        $calculator = new Calculator\BcMath(new NonNegativeInt(0));
+
+        $res = $calculator->add($num, $num);
+
+        /** @link https://www.wolframalpha.com/input?i=%282%5E63-1%29+*+2 */
+        $this->assertEquals('18446744073709551614', $res->val());
+    }
+
+    public function testIsAccurateWithIntMin()
+    {
+        $num = DecimalNum::fromInt(\PHP_INT_MIN);
+        $calculator = new Calculator\BcMath(new NonNegativeInt(0));
+
+        $res = $calculator->add($num, $num);
+
+        /** @link https://www.wolframalpha.com/input?i=%28-2+%5E+63%29+*+2 */
+        $this->assertEquals('-18446744073709551616', $res->val());
     }
 }

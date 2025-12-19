@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Haeckel\BasicDecArithm;
 
-use Haeckel\TypeWrapper\PositiveInt;
+use Haeckel\TypeWrapper\NonNegativeInt;
 
 class DecimalNum implements DecimalNumInterface
 {
@@ -24,7 +24,7 @@ class DecimalNum implements DecimalNumInterface
 
     public static function fromStringWithScale(
         string $value,
-        PositiveInt $scale,
+        NonNegativeInt $scale,
         LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $formattedValue */
@@ -37,7 +37,7 @@ class DecimalNum implements DecimalNumInterface
 
     public static function fromScientificNotationString(
         string $value,
-        PositiveInt $scale,
+        NonNegativeInt $scale,
         LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $value */
@@ -50,7 +50,7 @@ class DecimalNum implements DecimalNumInterface
 
     public static function fromFloat(
         float $value,
-        PositiveInt $scale,
+        NonNegativeInt $scale,
         LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $val */

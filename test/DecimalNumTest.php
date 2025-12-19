@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Haeckel\BasicDecArithm\Test;
 
 use Haeckel\BasicDecArithm\DecimalNum;
-use Haeckel\TypeWrapper\PositiveInt;
+use Haeckel\TypeWrapper\NonNegativeInt;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ class DecimalNumTest extends TestCase
 
     public function testAcceptsScale(): void
     {
-        $num = DecimalNum::fromStringWithScale('123.455', new PositiveInt(2));
+        $num = DecimalNum::fromStringWithScale('123.455', new NonNegativeInt(2));
         $this->assertEquals('123.46', $num->val());
     }
 
@@ -34,7 +34,7 @@ class DecimalNumTest extends TestCase
     {
         $num = DecimalNum::fromScientificNotationString(
             '1.23E3',
-            new PositiveInt(2),
+            new NonNegativeInt(2),
         );
         $this->assertEquals(
             \sprintf('%.2F', \round((float) '1.23E3', 2)),
@@ -44,13 +44,13 @@ class DecimalNumTest extends TestCase
 
     public function testAcceptsFloatMax(): void
     {
-        $num = DecimalNum::fromFloat(\PHP_FLOAT_MAX, new PositiveInt(14));
+        $num = DecimalNum::fromFloat(\PHP_FLOAT_MAX, new NonNegativeInt(14));
         $this->assertEquals(\sprintf('%.14F', \PHP_FLOAT_MAX), $num->val());
     }
 
     public function testAcceptsFloatMin(): void
     {
-        $num = DecimalNum::fromFloat(\PHP_FLOAT_MIN, new PositiveInt(20));
+        $num = DecimalNum::fromFloat(\PHP_FLOAT_MIN, new NonNegativeInt(20));
         $this->assertEquals(
             \sprintf('%.20F', \round(\PHP_FLOAT_MIN, 20)),
             $num->val()

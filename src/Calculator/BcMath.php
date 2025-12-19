@@ -10,13 +10,13 @@ use Haeckel\BasicDecArithm\{
     DecimalNum,
     DecimalNumInterface,
 };
-use Haeckel\TypeWrapper\PositiveInt;
+use Haeckel\TypeWrapper\NonNegativeInt;
 
 class BcMath implements CalculatorInterface
 {
     private int $scale;
 
-    public function __construct(PositiveInt $scale)
+    public function __construct(NonNegativeInt $scale)
     {
         $this->scale = $scale->toInt();
     }
@@ -24,7 +24,7 @@ class BcMath implements CalculatorInterface
     public function add(
         DecimalNumInterface $augend,
         DecimalNumInterface $addend,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
         return new DecimalNum(
@@ -35,7 +35,7 @@ class BcMath implements CalculatorInterface
     public function sub(
         DecimalNumInterface $minuend,
         DecimalNumInterface $subtrahend,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
         return new DecimalNum(
@@ -46,7 +46,7 @@ class BcMath implements CalculatorInterface
     public function mul(
         DecimalNumInterface $multiplier,
         DecimalNumInterface $multiplicand,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
         return new DecimalNum(
@@ -57,7 +57,7 @@ class BcMath implements CalculatorInterface
     public function div(
         DecimalNumInterface $dividend,
         DecimalNumInterface $divisor,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
         return new DecimalNum(
@@ -68,7 +68,7 @@ class BcMath implements CalculatorInterface
     public function mod(
         DecimalNumInterface $dividend,
         DecimalNumInterface $divisor,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
         return new DecimalNum(
@@ -77,7 +77,7 @@ class BcMath implements CalculatorInterface
     }
 
     public function sum(
-        ?PositiveInt $scale,
+        ?NonNegativeInt $scale,
         DecimalNumInterface ...$values,
     ): DecimalNumInterface {
         $scale = $scale?->toInt() ?? $this->scale;
@@ -90,7 +90,7 @@ class BcMath implements CalculatorInterface
     }
 
     public function diff(
-        ?PositiveInt $scale,
+        ?NonNegativeInt $scale,
         DecimalNumInterface $minuend,
         DecimalNumInterface ...$subtrahends,
     ): DecimalNumInterface {
@@ -106,7 +106,7 @@ class BcMath implements CalculatorInterface
     public function compareTo(
         DecimalNumInterface $lhs,
         DecimalNumInterface $rhs,
-        ?PositiveInt $scale = null,
+        ?NonNegativeInt $scale = null,
     ): CmpResult {
         $res = \bccomp(
             $lhs->val(),
