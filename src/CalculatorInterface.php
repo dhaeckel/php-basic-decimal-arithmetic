@@ -4,33 +4,54 @@ declare(strict_types=1);
 
 namespace Haeckel\BasicDecArithm;
 
+use Haeckel\TypeWrapper\PositiveInt;
+
 interface CalculatorInterface
 {
-    public function add(DecimalNum $augend, DecimalNum $addend): DecimalNum;
+    public function add(
+        DecimalNumInterface $augend,
+        DecimalNumInterface $addend,
+        ?PositiveInt $scale = null,
+    ): DecimalNumInterface;
 
     public function sub(
-        DecimalNum $minuend,
-        DecimalNum $subtrahend,
-    ): DecimalNum;
+        DecimalNumInterface $minuend,
+        DecimalNumInterface $subtrahend,
+        ?PositiveInt $scale = null,
+    ): DecimalNumInterface;
 
     public function mul(
-        DecimalNum $multiplier,
-        DecimalNum $multiplicand,
-    ): DecimalNum;
+        DecimalNumInterface $multiplier,
+        DecimalNumInterface $multiplicand,
+        ?PositiveInt $scale = null,
+    ): DecimalNumInterface;
 
-    public function div(DecimalNum $dividend, DecimalNum $divisor): DecimalNum;
+    public function div(
+        DecimalNumInterface $dividend,
+        DecimalNumInterface $divisor,
+        ?PositiveInt $scale = null,
+    ): DecimalNumInterface;
 
-    public function sum(DecimalNum ...$values): DecimalNum;
+    public function sum(
+        ?PositiveInt $scale,
+        DecimalNumInterface ...$values,
+    ): DecimalNumInterface;
 
     public function diff(
-        DecimalNum $minuend,
-        DecimalNum ...$subtrahends,
-    ): DecimalNum;
+        ?PositiveInt $scale,
+        DecimalNumInterface $minuend,
+        DecimalNumInterface ...$subtrahends,
+    ): DecimalNumInterface;
 
     public function mod(
-        DecimalNum $dividend,
-        DecimalNum $divisor,
-    ): DecimalNum;
+        DecimalNumInterface $dividend,
+        DecimalNumInterface $divisor,
+        ?PositiveInt $scale = null,
+    ): DecimalNumInterface;
 
-    public function compareTo(DecimalNum $a, DecimalNum $b): CmpResult;
+    public function compareTo(
+        DecimalNumInterface $lhs,
+        DecimalNumInterface $rhs,
+        ?PositiveInt $scale = null,
+    ): CmpResult;
 }

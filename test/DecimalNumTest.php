@@ -16,14 +16,12 @@ class DecimalNumTest extends TestCase
     {
         $num = new DecimalNum('123.456');
         $this->assertEquals('123.456', (string) $num);
-        $this->assertEquals(3, $num->scale);
     }
 
     public function testAcceptsScale(): void
     {
         $num = DecimalNum::fromStringWithScale('123.455', new PositiveInt(2));
-        $this->assertEquals('123.46', $num->value);
-        $this->assertEquals(2, $num->scale);
+        $this->assertEquals('123.46', $num->val());
     }
 
     public function testCreateFromInvalidString(): void
@@ -34,19 +32,20 @@ class DecimalNumTest extends TestCase
 
     public function testAcceptsScientificNotation(): void
     {
-        $num = DecimalNum::fromScientificNotationString('1.23E3', new PositiveInt(2));
+        $num = DecimalNum::fromScientificNotationString(
+            '1.23E3',
+            new PositiveInt(2),
+        );
         $this->assertEquals(
             \sprintf('%.2F', \round((float) '1.23E3', 2)),
-            $num->value,
+            $num->val(),
         );
-        $this->assertEquals(2, $num->scale);
     }
 
     public function testAcceptsFloatMax(): void
     {
         $num = DecimalNum::fromFloat(\PHP_FLOAT_MAX, new PositiveInt(14));
-        $this->assertEquals(\sprintf('%.14F', \PHP_FLOAT_MAX), $num->value);
-        $this->assertEquals(14, $num->scale);
+        $this->assertEquals(\sprintf('%.14F', \PHP_FLOAT_MAX), $num->val());
     }
 
     public function testAcceptsFloatMin(): void
@@ -54,22 +53,19 @@ class DecimalNumTest extends TestCase
         $num = DecimalNum::fromFloat(\PHP_FLOAT_MIN, new PositiveInt(20));
         $this->assertEquals(
             \sprintf('%.20F', \round(\PHP_FLOAT_MIN, 20)),
-            $num->value
+            $num->val()
         );
-        $this->assertEquals(20, $num->scale);
     }
 
     public function testAcceptsIntMax(): void
     {
         $num = DecimalNum::fromInt(\PHP_INT_MAX);
-        $this->assertEquals((string) \PHP_INT_MAX, $num->value);
-        $this->assertEquals(0, $num->scale);
+        $this->assertEquals((string) \PHP_INT_MAX, $num->val());
     }
 
     public function testAcceptsIntMin(): void
     {
         $num = DecimalNum::fromInt(\PHP_INT_MIN);
-        $this->assertEquals((string) \PHP_INT_MIN, $num->value);
-        $this->assertEquals(0, $num->scale);
+        $this->assertEquals((string) \PHP_INT_MIN, $num->val());
     }
 }

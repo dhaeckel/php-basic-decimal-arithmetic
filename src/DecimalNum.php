@@ -6,66 +6,73 @@ namespace Haeckel\BasicDecArithm;
 
 use Haeckel\TypeWrapper\PositiveInt;
 
-class DecimalNum implements \Stringable
+class DecimalNum implements DecimalNumInterface
 {
-    public readonly int $scale;
-
-    /** @throws \InvalidArgumentException if scale is negative */
-    public function __construct(public readonly string $value)
+    /**
+     * @param numeric-string $value narrower than numeric-string,
+     * scientific notation is disallowed
+     * @throws \InvalidArgumentException if value does not pass regex validation
+     */
+    public function __construct(private readonly string $value)
     {
         if (\preg_match(' /^[+-]?[0-9]*(\.[0-9]*)?$/', $value) === 0) {
             throw new \InvalidArgumentException(
                 'Invalid numeric string: ' . $value,
             );
         }
-        $dotPos = \strpos($value, '.');
-        $this->scale = $dotPos === false ? 0 : \strlen($value) - $dotPos - 1;
     }
 
     public static function fromStringWithScale(
         string $value,
         PositiveInt $scale,
-        int $roundMode = \PHP_ROUND_HALF_UP,
+        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
+        /** @var numeric-string $formattedValue */
         $formattedValue = \sprintf(
             "%.{$scale}F",
-            \round((float) $value, $scale->toInt(), $roundMode),
+            \round((float) $value, $scale->toInt(), $roundMode->value),
         );
-        return new self($formattedValue, $scale);
+        return new self($formattedValue);
     }
 
     public static function fromScientificNotationString(
         string $value,
         PositiveInt $scale,
-        int $roundMode = \PHP_ROUND_HALF_UP,
+        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
+        /** @var numeric-string $value */
         $value = \sprintf(
             "%.{$scale}F",
-            \round((float) $value, $scale->toInt(), $roundMode),
+            \round((float) $value, $scale->toInt(), $roundMode->value),
         );
-        return new self($value, $scale);
+        return new self($value);
     }
 
     public static function fromFloat(
         float $value,
         PositiveInt $scale,
-        int $roundMode = \PHP_ROUND_HALF_UP,
+        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
     ): self {
-        return new self(
-            \sprintf(
-                "%.{$scale}F",
-                \round($value, $scale->toInt(), $roundMode),
-            ),
-            $scale,
+        /** @var numeric-string $val */
+        $val = \sprintf(
+            "%.{$scale}F",
+            \round($value, $scale->toInt(), $roundMode->value),
         );
+        return new self($val);
     }
 
     public static function fromInt(int $value): self
     {
-        return new self((string) $value, 0);
+        return new self((string) $value);
     }
 
     public function __toString(): string
+    {
+        return $this->value;
+    }
+
+    /** @return numeric-string */
+    public function val(): string
     {
         return $this->value;
     }
