@@ -2,7 +2,7 @@
 <ruleset
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
-	name="Haeckel/json-rpc"
+	name="Haeckel/Codestyle"
 >
 	<arg name="basepath" value="." />
 	<arg name="encoding" value="UTF-8" />
