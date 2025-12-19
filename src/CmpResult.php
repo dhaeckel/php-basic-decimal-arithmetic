@@ -15,7 +15,7 @@ enum CmpResult
         return match (true) {
             $comparisonResult === 0 => self::Equal,
             $comparisonResult > 0 => self::GreaterThan,
-            $comparisonResult < 0 => self::LessThan,
+            default => self::LessThan,
         };
     }
 }
