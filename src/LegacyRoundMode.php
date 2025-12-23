@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Haeckel\BasicDecArithm;
 
-enum LegacyRoundingMode: int
+enum LegacyRoundMode: int
 {
     case HalfAwayFromZero = \PHP_ROUND_HALF_UP;
     case HalfTowardsZero = \PHP_ROUND_HALF_DOWN;

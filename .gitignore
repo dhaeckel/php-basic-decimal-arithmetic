@@ -1,3 +1,4 @@
 /vendor/
 .phpunit
 .phpmd.result-cache.php
+.vscode

@@ -6,6 +6,6 @@ namespace Haeckel\BasicDecArithm;
 
 interface DecimalNumInterface extends \Stringable
 {
-    /** @return numeric-string */
+    /** @return numeric-string&non-empty-string */
     public function val(): string;
 }

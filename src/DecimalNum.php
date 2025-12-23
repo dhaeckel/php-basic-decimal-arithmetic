@@ -9,15 +9,29 @@ use Haeckel\TypeWrapper\NonNegativeInt;
 class DecimalNum implements DecimalNumInterface
 {
     /**
-     * @param numeric-string $value narrower than numeric-string,
-     * scientific notation is disallowed
-     * @throws \InvalidArgumentException if value does not pass regex validation
+     * @param numeric-string&non-empty-string $value
+     * narrower than numeric-string, scientific notation is disallowed
+     *
+     * @throws \ValueError
+     * if value is empty, not numeric or in scientific notation
      */
     public function __construct(private readonly string $value)
     {
-        if (\preg_match(' /^[+-]?[0-9]*(\.[0-9]*)?$/', $value) === 0) {
-            throw new \InvalidArgumentException(
-                'Invalid numeric string: ' . $value,
+        if ($value === '') {
+            throw new \ValueError('Value cannot be an empty string');
+        }
+
+        if (! \is_numeric($value)) {
+            throw new \ValueError(
+                'Value must be a numeric string: ' . $value,
+            );
+        }
+
+        if (\str_contains($value, 'e') || \str_contains($value, 'E')) {
+            throw new \ValueError(
+                'Value cannot be in scientific notation, '
+                . 'use fromScientificNotationString. '
+                . "Given value: $value"
             );
         }
     }
@@ -25,7 +39,7 @@ class DecimalNum implements DecimalNumInterface
     public static function fromStringWithScale(
         string $value,
         NonNegativeInt $scale,
-        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
+        LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $formattedValue */
         $formattedValue = \sprintf(
@@ -38,7 +52,7 @@ class DecimalNum implements DecimalNumInterface
     public static function fromScientificNotationString(
         string $value,
         NonNegativeInt $scale,
-        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
+        LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $value */
         $value = \sprintf(
@@ -51,7 +65,7 @@ class DecimalNum implements DecimalNumInterface
     public static function fromFloat(
         float $value,
         NonNegativeInt $scale,
-        LegacyRoundingMode $roundMode = LegacyRoundingMode::HalfAwayFromZero,
+        LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
         /** @var numeric-string $val */
         $val = \sprintf(

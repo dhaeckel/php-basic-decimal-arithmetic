@@ -29,6 +29,11 @@
             "@putenv XDEBUG_MODE=coverage",
             "vendor/bin/phpunit"
         ],
+        "dbg-test": [
+            "@putenv XDEBUG_MODE=coverage,debug",
+            "@putenv XDEBUG_SESSION=1",
+            "vendor/bin/phpunit"
+        ],
          "testSilent": [
             "@putenv XDEBUG_MODE=coverage",
             "vendor/bin/phpunit --no-output 2> /dev/null"
