@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\BasicDecArithm;
+namespace Haeckel\BasicDecimalArithmetic\Test;
 
+use Haeckel\BasicDecimalArithmetic\CmpResult;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

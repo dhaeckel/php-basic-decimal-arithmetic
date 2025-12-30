@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\BasicDecArithm;
+namespace Haeckel\BasicDecimalArithmetic;
 
 interface CalculatorInterface
 {

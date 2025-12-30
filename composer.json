@@ -1,6 +1,6 @@
 {
     "name": "haeckel/basic-decimal-arithmetic",
-    "description": "Simple lib for doing basic arithmetic with decimal numbers with arbitrary precision",
+    "description": "Simple interface for doing basic arithmetic with decimal numbers with arbitrary precision",
     "type": "library",
     "require-dev": {
         "phpmd/phpmd": "@stable",
@@ -11,7 +11,7 @@
     "license": "LGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
-            "Haeckel\\BasicDecArithm\\": "src/"
+            "Haeckel\\BasicDecimalArithmetic\\": "src/"
         }
     },
     "authors": [
@@ -84,8 +84,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "suggest": {
-        "ext-bcmath": "Required for the bc math based implementation."
     }
 }

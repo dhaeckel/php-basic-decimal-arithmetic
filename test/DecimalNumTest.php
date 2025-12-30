@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\BasicDecArithm\Test;
+namespace Haeckel\BasicDecimalArithmetic\Test;
 
-use Haeckel\BasicDecArithm\DecimalNum;
+use Haeckel\BasicDecimalArithmetic\DefaultDecimalNum;
 use Haeckel\TypeWrapper\NonNegativeInt;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(DecimalNum::class)]
+#[CoversClass(DefaultDecimalNum::class)]
 class DecimalNumTest extends TestCase
 {
     public function testCreateFromValidString(): void
     {
-        $num = new DecimalNum('123.456');
+        $num = new DefaultDecimalNum('123.456');
         $this->assertEquals('123.456', (string) $num);
     }
 
     public function testAcceptsScale(): void
     {
-        $num = DecimalNum::fromStringWithScale(
+        $num = DefaultDecimalNum::fromStringWithScale(
             '123.455',
             new NonNegativeInt(2),
         );
@@ -31,14 +31,14 @@ class DecimalNumTest extends TestCase
     {
         $this->expectException(\ValueError::class);
         $this->expectExceptionMessage('Value must be a numeric string');
-        new DecimalNum('1/2');
+        new DefaultDecimalNum('1/2');
     }
 
     public function testCreateFromEmptyString(): void
     {
         $this->expectException(\ValueError::class);
         $this->expectExceptionMessage('Value cannot be an empty string');
-        new DecimalNum('');
+        new DefaultDecimalNum('');
     }
 
     public function testCreateFromScientificNotationStringThrows(): void
@@ -49,12 +49,12 @@ class DecimalNumTest extends TestCase
             . 'use fromScientificNotationString. '
             . 'Given value: 1.23E3',
         );
-        new DecimalNum('1.23E3');
+        new DefaultDecimalNum('1.23E3');
     }
 
     public function testAcceptsScientificNotation(): void
     {
-        $num = DecimalNum::fromScientificNotationString(
+        $num = DefaultDecimalNum::fromScientificNotationString(
             '1.23E3',
             new NonNegativeInt(2),
         );
@@ -66,13 +66,19 @@ class DecimalNumTest extends TestCase
 
     public function testAcceptsFloatMax(): void
     {
-        $num = DecimalNum::fromFloat(\PHP_FLOAT_MAX, new NonNegativeInt(14));
+        $num = DefaultDecimalNum::fromFloat(
+            \PHP_FLOAT_MAX,
+            new NonNegativeInt(14),
+        );
         $this->assertEquals(\sprintf('%.14F', \PHP_FLOAT_MAX), $num->val());
     }
 
     public function testAcceptsFloatMin(): void
     {
-        $num = DecimalNum::fromFloat(\PHP_FLOAT_MIN, new NonNegativeInt(20));
+        $num = DefaultDecimalNum::fromFloat(
+            \PHP_FLOAT_MIN,
+            new NonNegativeInt(20),
+        );
         $this->assertEquals(
             \sprintf('%.20F', \round(\PHP_FLOAT_MIN, 20)),
             $num->val()
@@ -81,13 +87,13 @@ class DecimalNumTest extends TestCase
 
     public function testAcceptsIntMax(): void
     {
-        $num = DecimalNum::fromInt(\PHP_INT_MAX);
+        $num = DefaultDecimalNum::fromInt(\PHP_INT_MAX);
         $this->assertEquals((string) \PHP_INT_MAX, $num->val());
     }
 
     public function testAcceptsIntMin(): void
     {
-        $num = DecimalNum::fromInt(\PHP_INT_MIN);
+        $num = DefaultDecimalNum::fromInt(\PHP_INT_MIN);
         $this->assertEquals((string) \PHP_INT_MIN, $num->val());
     }
 }

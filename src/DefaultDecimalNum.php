@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Haeckel\BasicDecArithm;
+namespace Haeckel\BasicDecimalArithmetic;
 
 use Haeckel\TypeWrapper\NonNegativeInt;
 
-class DecimalNum implements DecimalNumInterface
+class DefaultDecimalNum implements DecimalNumInterface
 {
     /**
      * @param numeric-string&non-empty-string $value
