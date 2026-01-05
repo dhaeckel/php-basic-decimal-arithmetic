@@ -13,7 +13,6 @@ Simple php library for working with decimal numbers in arbitrary precision.
 ## Features
 
 - Calculator interface the four basic arithmetic operations and modulo
-- a bcmath backed calculator implementation
 - a type decimal num to encapsulate strings in decimal notation (main motivation was the bcmath required format)
 - a cmpResult enum to have readable values for comparison results. Used by calculator, but may as well be used for e.g. strcmp
 
@@ -32,13 +31,13 @@ to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-[Source Code](https://github.com/dhaeckel/php-exception)
+[Source Code](https://github.com/dhaeckel/php-basic-decimal-arithmetic)
 
 ## Support
 
 Let us know if you have issues.
 
-[Issue Tracker](https://github.com/dhaeckel/php-exception/issues)
+[Issue Tracker](https://github.com/dhaeckel/php-basic-decimal-arithmetic/issues)
 
 ## License
 
