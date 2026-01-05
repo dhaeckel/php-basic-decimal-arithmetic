@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/dhaeckel/php-basic-decimal-arithmetic/graph/badge.svg?token=3KR4PQ9E0Y)](https://codecov.io/gh/dhaeckel/php-basic-decimal-arithmetic)
+[![ci](https://github.com/dhaeckel/php-basic-decimal-arithmetic/actions/workflows/php.yml/badge.svg)](https://github.com/dhaeckel/php-basic-decimal-arithmetic/actions/workflows/php.yml)
 [![Static Badge](https://img.shields.io/badge/PHPStan-level%20max-brightgreen)
 ](phpstan.dist.neon)
 ![Static Badge](https://img.shields.io/badge/PHPStan-strict_rules-brightgreen)
