@@ -41,7 +41,7 @@ class DefaultDecimalNum implements DecimalNumInterface
         NonNegativeInt $scale,
         LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
-        /** @var numeric-string $formattedValue */
+        /** @var numeric-string&non-empty-string $formattedValue */
         $formattedValue = \sprintf(
             "%.{$scale}F",
             \round((float) $value, $scale->toInt(), $roundMode->value),
@@ -54,7 +54,7 @@ class DefaultDecimalNum implements DecimalNumInterface
         NonNegativeInt $scale,
         LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
-        /** @var numeric-string $value */
+        /** @var numeric-string&non-empty-string $value */
         $value = \sprintf(
             "%.{$scale}F",
             \round((float) $value, $scale->toInt(), $roundMode->value),
@@ -67,7 +67,7 @@ class DefaultDecimalNum implements DecimalNumInterface
         NonNegativeInt $scale,
         LegacyRoundMode $roundMode = LegacyRoundMode::HalfAwayFromZero,
     ): self {
-        /** @var numeric-string $val */
+        /** @var numeric-string&non-empty-string $val */
         $val = \sprintf(
             "%.{$scale}F",
             \round($value, $scale->toInt(), $roundMode->value),
@@ -85,7 +85,7 @@ class DefaultDecimalNum implements DecimalNumInterface
         return $this->value;
     }
 
-    /** @return numeric-string */
+    /** @return numeric-string&non-empty-string */
     public function val(): string
     {
         return $this->value;
