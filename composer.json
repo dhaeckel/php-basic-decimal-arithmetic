@@ -36,10 +36,6 @@
             "@putenv XDEBUG_SESSION=1",
             "vendor/bin/phpunit"
         ],
-         "testSilent": [
-            "@putenv XDEBUG_MODE=coverage",
-            "vendor/bin/phpunit --no-output 2> /dev/null"
-        ],
         "phpstan": [
             "vendor/bin/phpstan"
         ],
@@ -60,7 +56,7 @@
             "@cs -q",
             "@phpmd",
             "@phpstan -q",
-            "@test --no-output"
+            "@test --no-progress"
         ],
         "local-ci": [
             "@cbf",

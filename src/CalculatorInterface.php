@@ -44,4 +44,9 @@ interface CalculatorInterface
         DecimalNumInterface $lhs,
         DecimalNumInterface $rhs,
     ): CmpResult;
+
+    public function pow(
+        DecimalNumInterface $base,
+        int $exponent,
+    ): DecimalNumInterface;
 }
