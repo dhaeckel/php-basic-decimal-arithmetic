@@ -21,6 +21,7 @@ interface CalculatorInterface
         DecimalNumInterface $multiplicand,
     ): DecimalNumInterface;
 
+    /** @throws \DivisionByZeroError if $divisor is 0 */
     public function div(
         DecimalNumInterface $dividend,
         DecimalNumInterface $divisor,
@@ -35,18 +36,19 @@ interface CalculatorInterface
         DecimalNumInterface ...$subtrahends,
     ): DecimalNumInterface;
 
+    /** @throws \DivisionByZeroError if $divisor is 0 */
     public function mod(
         DecimalNumInterface $dividend,
         DecimalNumInterface $divisor,
+    ): DecimalNumInterface;
+
+    public function intPow(
+        DecimalNumInterface $base,
+        int $exponent,
     ): DecimalNumInterface;
 
     public function compareTo(
         DecimalNumInterface $lhs,
         DecimalNumInterface $rhs,
     ): CmpResult;
-
-    public function pow(
-        DecimalNumInterface $base,
-        int $exponent,
-    ): DecimalNumInterface;
 }
